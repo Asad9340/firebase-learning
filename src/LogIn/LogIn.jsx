@@ -1,9 +1,15 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import auth from '../firebase/firebase.config';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { IoMdEye } from 'react-icons/io';
+import { IoMdEyeOff } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 
 function LogIn() {
   const [registerError, setRegisterError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const emailRef=useRef(null);
   const handleLogIn = event => {
     event.preventDefault();
     const email = event.target.email.value;
@@ -11,9 +17,27 @@ function LogIn() {
     setRegisterError('');
 
     signInWithEmailAndPassword(auth, email, password)
-      .then(userCredential => console.log(userCredential.user))
+      .then(userCredential => {
+        console.log(userCredential.user), setSuccess(userCredential.user);
+      })
       .catch(error => setRegisterError(error.message));
   };
+
+  const handleForgatePassword = () => {
+    const email = emailRef.current.value;
+    if (!email) {
+      alert('Please enter a  email')
+      return;
+    }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Please enter a valid email formate');
+      return;
+    }
+    sendPasswordResetEmail(auth, email)
+      .then(userCredential => console.log(userCredential))
+      .catch(err => console.log(err));
+  };
+
   return (
     <div className="flex justify-center">
       <div className="w-full max-w-md mt-10 space-y-3 rounded-xl  text-black border p-4">
@@ -25,6 +49,7 @@ function LogIn() {
             </label>
             <input
               type="email"
+              ref={emailRef}
               name="email"
               id="email"
               placeholder="Email..."
@@ -35,15 +60,27 @@ function LogIn() {
             <label htmlFor="password" className="block text-gray-400">
               Password
             </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Password"
-              className="w-full px-4 py-3 rounded-md border border-gray-700 text-gray-800 focus:border-violet-400"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                id="password"
+                placeholder="Password"
+                className="w-full px-4 py-3 rounded-md border border-gray-700 text-gray-800 focus:border-violet-400"
+              />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute top-4 right-4"
+              >
+                {showPassword ? <IoMdEye /> : <IoMdEyeOff />}
+              </span>
+            </div>
             <div className="flex justify-end text-xs text-gray-400">
-              <a rel="noopener noreferrer" href="#">
+              <a
+                onClick={handleForgatePassword}
+                rel="noopener noreferrer"
+                href="#"
+              >
                 Forgot Password?
               </a>
             </div>
@@ -53,11 +90,16 @@ function LogIn() {
                   {registerError}
                 </p>
               )}
+              {success && (
+                <p className="text-lg bg-green-500 px-8 py-2 rounded-lg text-white flex justify-center mx-auto text-center my-4">
+                  LogIn Successfully
+                </p>
+              )}
             </div>
           </div>
           <button
             type="submit"
-            className="block w-full p-3 text-center rounded-sm text-gray-900 bg-violet-400"
+            className="block w-full p-3 text-center rounded-lg text-gray-900 bg-violet-400"
           >
             Sign in
           </button>
@@ -98,15 +140,16 @@ function LogIn() {
             </svg>
           </button>
         </div>
-        <p className="text-xs text-center sm:px-6 text-gray-400">
+        <p className="text-lg text-center sm:px-6 text-gray-400">
           Do not have an account?
-          <a
+          <Link
+            to="/register"
             rel="noopener noreferrer"
             href="#"
-            className="underline text-gray-100"
+            className="underline text-gray-900 font-medium"
           >
             Sign up
-          </a>
+          </Link>
         </p>
       </div>
     </div>

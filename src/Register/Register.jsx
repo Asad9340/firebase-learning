@@ -3,6 +3,7 @@ import auth from '../firebase/firebase.config';
 import { useState } from 'react';
 import { IoMdEye } from 'react-icons/io';
 import { IoMdEyeOff } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 
 function Register() {
   const [registerError, setRegisterError] = useState('');
@@ -93,7 +94,7 @@ function Register() {
             )}
             {success && (
               <p className="text-lg bg-green-500 px-8 py-2 rounded-lg text-white flex justify-center mx-auto text-center my-4">
-                Successfully Created
+                User Created Successfully
               </p>
             )}
             {
@@ -128,12 +129,11 @@ function Register() {
 
           <div className="text-grey-dark mt-6">
             Already have an account?
-            <a
+            <Link to='/login'
               className="no-underline border-b border-blue text-blue"
-              href="../login/"
             >
               Log in
-            </a>
+            </Link>
             .
           </div>
         </form>
