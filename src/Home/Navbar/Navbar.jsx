@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <div>
+    <div className="">
       <header className="p-4 bg-gray-800 text-gray-100">
-        <div className="container flex justify-between h-16 mx-auto">
+        <div className="max-w-5xl flex justify-between mx-auto">
           <a
             rel="noopener noreferrer"
             href="#"
@@ -23,7 +23,8 @@ function Navbar() {
           </a>
           <ul className="items-stretch hidden space-x-3 lg:flex">
             <li className="flex">
-              <Link to="/login"
+              <Link
+                to="/login"
                 rel="noopener noreferrer"
                 href="#"
                 className="flex items-center px-4  dark:border- text-violet-400 border-violet-400"
@@ -32,7 +33,8 @@ function Navbar() {
               </Link>
             </li>
             <li className="flex">
-              <Link to='/register'
+              <Link
+                to="/register"
                 rel="noopener noreferrer"
                 href="#"
                 className="flex items-center px-4  dark:border-"

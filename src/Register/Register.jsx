@@ -8,6 +8,7 @@ function Register() {
   const [registerError, setRegisterError] = useState('');
   const [success, setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [checkBoxStatus, setCheckBoxStatus] = useState(false);
   const handleRegister = event => {
     event.preventDefault();
     const name = event.target.fullname.value;
@@ -68,8 +69,22 @@ function Register() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute top-4 right-4"
               >
-                {showPassword ?<IoMdEye />:<IoMdEyeOff />}
+                {showPassword ? <IoMdEye /> : <IoMdEyeOff />}
               </span>
+            </div>
+            <div className="mb-3 ml-2 text-sm">
+              <input
+                onClick={() => setCheckBoxStatus(!checkBoxStatus)}
+                type="checkbox"
+                name="terms"
+                id=""
+              />
+              <label className="ml-2" htmlFor="terms">
+                Accept Our{' '}
+                <a className="underline" href="#">
+                  Terms and Conditions
+                </a>
+              </label>
             </div>
             {registerError && (
               <p className="text-lg bg-red-500 px-8 py-2 rounded-lg text-white flex justify-center mx-auto text-center my-4">
@@ -81,10 +96,14 @@ function Register() {
                 Successfully Created
               </p>
             )}
+            {
+              checkBoxStatus?"":<p>Please accept all terms and conditions</p>
+            }
 
             <button
               type="submit"
-              className="w-full text-center py-3 rounded-lg bg-green text-black border border-gray-900 hover:bg-green-dark focus:outline-none my-1"
+              className="w-full text-center py-3 rounded-lg bg-gray-900 text-white border border-gray-900 hover:bg-green-dark focus:outline-none my-1"
+              disabled={checkBoxStatus?'':'disabled'}
             >
               Sign Up
             </button>

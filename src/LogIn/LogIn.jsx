@@ -1,16 +1,24 @@
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import auth from '../firebase/firebase.config';
+import { useState } from 'react';
+
 function LogIn() {
-  const handleLogIn = (event) => {
+  const [registerError, setRegisterError] = useState('');
+  const handleLogIn = event => {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
-    console.log(email);
-    console.log(password)
+    setRegisterError('');
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(userCredential => console.log(userCredential.user))
+      .catch(error => setRegisterError(error.message));
   };
   return (
     <div className="flex justify-center">
-      <div className="w-full max-w-md mt-10 space-y-3 rounded-xl  text-black border">
+      <div className="w-full max-w-md mt-10 space-y-3 rounded-xl  text-black border p-4">
         <h1 className="text-2xl font-bold text-center">Login</h1>
-        <form  onSubmit={handleLogIn} className="space-y-6">
+        <form onSubmit={handleLogIn} className="space-y-6">
           <div className="space-y-1 text-sm">
             <label htmlFor="username" className="block text-gray-400">
               Username
@@ -39,8 +47,18 @@ function LogIn() {
                 Forgot Password?
               </a>
             </div>
+            <div>
+              {registerError && (
+                <p className="text-lg bg-red-500 px-8 py-2 rounded-lg text-white flex justify-center mx-auto text-center my-4">
+                  {registerError}
+                </p>
+              )}
+            </div>
           </div>
-          <button type="submit" className="block w-full p-3 text-center rounded-sm text-gray-900 bg-violet-400">
+          <button
+            type="submit"
+            className="block w-full p-3 text-center rounded-sm text-gray-900 bg-violet-400"
+          >
             Sign in
           </button>
         </form>
