@@ -1,8 +1,17 @@
 function Register() {
+    const handleRegister = event => {
+      event.preventDefault();
+      const name = event.target.fullname.value;
+      const email = event.target.email.value;
+      const password = event.target.password.value;
+      console.log(name);
+      console.log(email);
+      console.log(password);
+    };
   return (
     <div>
       <div className="bg-grey-lighter min-h-screen flex flex-col border">
-        <div className="container max-w-md mx-auto flex-1 flex flex-col items-center justify-center px-2">
+        <form onSubmit={handleRegister} className="container max-w-md mx-auto flex-1 flex flex-col items-center justify-center px-2">
           <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
             <h1 className="mb-8 text-3xl text-center">Sign up</h1>
             <input
@@ -67,7 +76,7 @@ function Register() {
             </a>
             .
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

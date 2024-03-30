@@ -1,19 +1,26 @@
 function LogIn() {
+  const handleLogIn = (event) => {
+    event.preventDefault();
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    console.log(email);
+    console.log(password)
+  };
   return (
     <div className="flex justify-center">
       <div className="w-full max-w-md mt-10 space-y-3 rounded-xl  text-black border">
         <h1 className="text-2xl font-bold text-center">Login</h1>
-        <form noValidate=""  className="space-y-6">
+        <form  onSubmit={handleLogIn} className="space-y-6">
           <div className="space-y-1 text-sm">
             <label htmlFor="username" className="block text-gray-400">
               Username
             </label>
             <input
-              type="text"
-              name="username"
-              id="username"
-              placeholder="Username"
-              className="w-full px-4 py-3 rounded-md border border-gray-700 text-gray-100 focus:border-violet-400"
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Email..."
+              className="w-full px-4 py-3 rounded-md border border-gray-700 text-gray-800 focus:border-violet-400"
             />
           </div>
           <div className="space-y-1 text-sm">
@@ -25,7 +32,7 @@ function LogIn() {
               name="password"
               id="password"
               placeholder="Password"
-              className="w-full px-4 py-3 rounded-md border border-gray-700 text-gray-100 focus:border-violet-400"
+              className="w-full px-4 py-3 rounded-md border border-gray-700 text-gray-800 focus:border-violet-400"
             />
             <div className="flex justify-end text-xs text-gray-400">
               <a rel="noopener noreferrer" href="#">
@@ -33,7 +40,7 @@ function LogIn() {
               </a>
             </div>
           </div>
-          <button className="block w-full p-3 text-center rounded-sm text-gray-900 bg-violet-400">
+          <button type="submit" className="block w-full p-3 text-center rounded-sm text-gray-900 bg-violet-400">
             Sign in
           </button>
         </form>
