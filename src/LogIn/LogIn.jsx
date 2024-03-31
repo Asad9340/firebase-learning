@@ -1,4 +1,9 @@
-import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  GoogleAuthProvider,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from 'firebase/auth';
 import auth from '../firebase/firebase.config';
 import { useRef, useState } from 'react';
 import { IoMdEye } from 'react-icons/io';
@@ -9,7 +14,8 @@ function LogIn() {
   const [registerError, setRegisterError] = useState('');
   const [success, setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const emailRef=useRef(null);
+     const provider = new GoogleAuthProvider();
+  const emailRef = useRef(null);
   const handleLogIn = event => {
     event.preventDefault();
     const email = event.target.email.value;
@@ -26,16 +32,21 @@ function LogIn() {
   const handleForgatePassword = () => {
     const email = emailRef.current.value;
     if (!email) {
-      alert('Please enter a  email')
+      alert('Please enter a  email');
       return;
-    }
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       alert('Please enter a valid email formate');
       return;
     }
     sendPasswordResetEmail(auth, email)
       .then(userCredential => console.log(userCredential))
       .catch(err => console.log(err));
+  };
+  const handleGoogleLogIn = () => {
+
+    signInWithPopup(auth, provider)
+      .then(result => console.log(result.user))
+      .catch(error => console.log(error));
   };
 
   return (
@@ -112,7 +123,11 @@ function LogIn() {
           <div className="flex-1 h-px sm:w-16 bg-gray-700"></div>
         </div>
         <div className="flex justify-center space-x-4">
-          <button aria-label="Log in with Google" className="p-3 rounded-sm">
+          <button
+            onClick={handleGoogleLogIn}
+            aria-label="Log in with Google"
+            className="p-3 border border-gray-900 rounded-full hover:bg-gray-300 duration-300"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 32 32"
